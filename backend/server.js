@@ -23,3 +23,16 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
 
 app.listen(8000, () => console.log("Server running on port 8000"));
+
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve frontend
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
